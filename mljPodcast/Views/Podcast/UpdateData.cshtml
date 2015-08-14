@@ -1,0 +1,36 @@
+﻿@model IEnumerable<mljPodcast.PodcastCollection>
+
+@{
+    ViewBag.Title = "UpdateData";
+}
+
+<h2>UpdateData</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Uri)
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Uri)
+        </td>
+    </tr>
+}
+</table>

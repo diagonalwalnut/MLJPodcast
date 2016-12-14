@@ -208,10 +208,15 @@ namespace mljPodcast.Controllers
         private string GetDescription(HtmlNode node, string bibleReference, string metaData)
         {
             string description = String.Empty;
+            string tempDescription = String.Empty;
 
             try
             {
-                description = (metaData + bibleReference + "; " + node.SelectSingleNode("p[@class='description']").InnerText).Replace("&mdash;", "").Replace("&#39;","'");
+                tempDescription = metaData + bibleReference + "; " + node.SelectSingleNode("p[@class='description']").InnerText;
+                tempDescription = tempDescription.Replace("&mdash;", "");
+                tempDescription = tempDescription.Replace("&#39;", "'");
+                tempDescription = tempDescription.Replace("&nbsp;", " ");
+                description = tempDescription;
             }
             catch (Exception) { }
 

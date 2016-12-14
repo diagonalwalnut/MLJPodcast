@@ -29,11 +29,20 @@
                 <title>@Html.DisplayFor(modelItem => podcast.Title)</title>
                 <link rel="author license" href="@Html.DisplayFor(modelItem => podcast.EpisodeUri)" />
                 <description>
-                        <![CDATA[ @Html.DisplayFor(modelItem => podcast.Description) ]]>
+                    <![CDATA[ @Html.DisplayFor(modelItem => podcast.Description) ]]>
                 </description>
                 <pubDate>@Html.DisplayFor(modelItem => podcast.PublicationDate)</pubDate>
                 <enclosure url="@Html.DisplayFor(modelItem => podcast.Uri)" type="audio/mpeg" />
                 <guid>@Html.DisplayFor(modelItem => podcast.Uri)</guid>
+
+                <itunes:author>Martyn Lloyd-Jones</itunes:author>
+                <itunes:explicit>No</itunes:explicit>
+                <itunes:subtitle>
+                    <![CDATA[ @Html.DisplayFor(modelItem => podcast.Description) ]]>
+                </itunes:subtitle>
+                <itunes:summary>
+                    <![CDATA[ @Html.DisplayFor(modelItem => podcast.Description) ]]>
+                </itunes:summary>
             </item>
         }
     </channel>

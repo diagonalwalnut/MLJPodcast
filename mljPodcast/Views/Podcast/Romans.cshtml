@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+    <channel>
+        <title>Martyn Lloyd-Jones Sermon Podcast</title>
+        <link>http://www.mljtrust.org/sermons/podcast/</link>
+        <description>
+            Martyn Lloyd-Jones was a Welsh Protestant minister, preacher and medical doctor who was influential in the Reformed wing of the British evangelical movement in the 20th century.
+        </description>
+        <language>en-us</language>
+        <copyright>2015</copyright>
+        <lastBuildDate>Thu, 30 Jul 2015 00:00:00 -0500</lastBuildDate>
+
+        <itunes:subtitle>
+            Martyn Lloyd-Jones was a Welsh Protestant minister, preacher and medical doctor who was influential in the Reformed wing of the British evangelical movement in the 20th century.
+        </itunes:subtitle>
+        <itunes:author>Martyn Lloyd-Jones</itunes:author>
+        <itunes:summary>Martyn Lloyd-Jones was a Welsh Protestant minister, preacher and medical doctor who was influential in the Reformed wing of the British evangelical movement in the 20th century.</itunes:summary><itunes:explicit>no</itunes:explicit><itunes:category text="Religion &amp; Spirituality">
+            <itunes:category text="Christianity"></itunes:category>
+        </itunes:category>
+        <itunes:owner>
+            <itunes:name>Martyn Lloyd-Jones</itunes:name>
+            <itunes:email>info@mljtrust.org</itunes:email>
+        </itunes:owner>
+        <itunes:image href="http://www.mljtrust.org/static/images/mlj-podcast.png"></itunes:image>
+
+        @foreach (var podcast in Model)
+        {
+            <item>
+                <title>@Html.DisplayFor(modelItem => podcast.Title)</title>
+                <link rel="author license" href="@Html.DisplayFor(modelItem => podcast.EpisodeUri)" />
+                <guid>@Html.DisplayFor(modelItem => podcast.Uri)</guid>
+                <description>@Html.DisplayFor(modelItem => podcast.Description)</description>
+                <enclosure url="@Html.DisplayFor(modelItem => podcast.Uri)" type="audio/mpeg" />
+            </item>
+        }
+    </channel>
+</rss>
+@model IEnumerable<mljPodcast.Podcast>
+@{ Layout = null;}

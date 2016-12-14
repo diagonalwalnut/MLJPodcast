@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Web.Mvc;
 using System.Windows.Media;
+using System.Linq;
 
 namespace mljPodcast.Controllers
 {
@@ -25,17 +26,17 @@ namespace mljPodcast.Controllers
 
         public ActionResult Podcast()
         {
-            string uri = "http://www.mljtrust.org/collections/book-of-romans/";
+            //string uri = "http://www.mljtrust.org/collections/book-of-romans/";
 
-            List<PodcastCollection> podcastCollection = new List<PodcastCollection>();
-            HtmlDocument htmlDoc = GetHtmlDoc(uri);
+            //List<PodcastCollection> podcastCollection = new List<PodcastCollection>();
+            //HtmlDocument htmlDoc = GetHtmlDoc(uri);
 
-            podcastCollection = GetCollections(htmlDoc, "chapter-list", uri);
+            //podcastCollection = GetCollections(htmlDoc, "chapter-list", uri);
 
-            PodcastDataService podcastDataService = new PodcastDataService();
-            podcastDataService.StoreCollection("Romans", new Newtonsoft.Json.JsonSerializer(), podcastCollection);
+            //PodcastDataService podcastDataService = new PodcastDataService();
+            //podcastDataService.StoreCollection("Romans", new Newtonsoft.Json.JsonSerializer(), podcastCollection);
             
-            return View();
+            //return View();
         }        
 
         private List<Podcast> ProcessPodcastSubcollection(string uri)
@@ -46,7 +47,7 @@ namespace mljPodcast.Controllers
 
             List<Podcast> podcastList = new List<Podcast>();
 
-            for (int i = 0; i < (pages.Count + 1); i++)
+            for (int i = 1; i < (pages.Count); i++)
             {
                 htmlDoc = GetHtmlDoc(uri + "?page=" + i);
                 podcastList.AddRange(GetPodcasts(htmlDoc));
@@ -100,11 +101,19 @@ namespace mljPodcast.Controllers
             {
                 HtmlNodeCollection test = bodyNode.SelectSingleNode("//div[@class='" + xpath + "']").ChildNodes;
 
+                var testing = test.Nodes().Select(n => n.Attributes["href"]);
+
                 foreach (var item in test)
                 {
                     try
                     {
-                        if (item.OriginalName.Equals("a"))
+                        if (pageList.Count == 0)
+                        {
+                            string temp = item.Attributes["href"].Value.ToString().Replace("page=2", "page=1");
+                            pageList.Add(temp);
+                        }
+
+                        if (item.OriginalName.Equals("a") && (pageList.Count < test.Count))
                         {
                             string pagingLink = item.Attributes["href"].Value.ToString();
                             pageList.Add(pagingLink);
@@ -154,6 +163,9 @@ namespace mljPodcast.Controllers
         {
             Podcast returnPodcast = new Podcast();
 
+            List<HtmlNode> nodes = new List<HtmlNode>();
+            nodes = node.DescendantsAndSelf().ToList<HtmlNode>();
+
             try { returnPodcast.Title = GetTitle(node.ChildNodes.FindFirst("h3")); }
             catch (Exception) { }
 
@@ -163,14 +175,14 @@ namespace mljPodcast.Controllers
             try { returnPodcast.Uri = GetUri(node.ChildNodes.FindFirst("audio")); }
             catch (Exception) { }
 
-            try { returnPodcast.BibleReference = GetBibleReference(node.SelectSingleNode("//p[@class='metadata']")); }
+            try { returnPodcast.BibleReference = GetBibleReference(node.SelectSingleNode("p[@class='metadata']")); }
             catch (Exception) { }
 
             try
             {
                 returnPodcast.Description = GetDescription(node,
                                               returnPodcast.BibleReference,
-                                              node.SelectSingleNode("//p[@class='metadata']").ChildNodes[0].InnerText);
+                                              node.SelectSingleNode("p[@class='metadata']").ChildNodes[0].InnerText);
             }
             catch (Exception) { }
 

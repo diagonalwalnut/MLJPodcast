@@ -1,10 +1,10 @@
 ﻿using HtmlAgilityPack;
+using mljPodcast.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Web.Mvc;
-using System.Windows;
 using System.Windows.Media;
 
 namespace mljPodcast.Controllers
@@ -32,10 +32,11 @@ namespace mljPodcast.Controllers
 
             podcastCollection = GetCollections(htmlDoc, "chapter-list", uri);
 
-            ViewBag.PodcastList = podcastCollection;
-
+            PodcastDataService podcastDataService = new PodcastDataService();
+            podcastDataService.StoreCollection("Romans", new Newtonsoft.Json.JsonSerializer(), podcastCollection);
+            
             return View();
-        }
+        }        
 
         private List<Podcast> ProcessPodcastSubcollection(string uri)
         {
@@ -65,8 +66,8 @@ namespace mljPodcast.Controllers
 
             HtmlNode bodyNode = htmldoc.DocumentNode.SelectSingleNode("//body");
 
-            //bodyNode.SelectSingleNode("//ul[@class='" + xpath + "']").SelectSingleNode("//span");
-            //collectionList.Add(new PodcastCollection { Title = "Chapter 1", Podcasts = ProcessPodcastSubcollection(baseUri) });
+            bodyNode.SelectSingleNode("//ul[@class='" + xpath + "']").SelectSingleNode("//span");
+            collectionList.Add(new PodcastCollection { Id = 1, Title = "1", Uri = "", Podcasts = ProcessPodcastSubcollection(siteuri.ToString()) });
 
             if (bodyNode != null)
             {
@@ -76,11 +77,16 @@ namespace mljPodcast.Controllers
                 {
                     try
                     {
-                        collectionList.Add(new PodcastCollection { Uri = item.Attributes["href"].Value.ToString(), Title = item.Attributes["title"].Value.ToString(), Podcasts = ProcessPodcastSubcollection(baseUri + item.Attributes["href"].Value.ToString()) });
+                        collectionList.Add(new PodcastCollection { Id = Int32.Parse(item.InnerText), Uri = item.Attributes["href"].Value.ToString(), Title = item.Attributes["title"].Value.ToString(), Podcasts = ProcessPodcastSubcollection(baseUri + item.Attributes["href"].Value.ToString()) });
                     }
                     catch (Exception e) { }
                 }
             }
+            string tempTitle = "";
+            tempTitle = collectionList[1].Title.Replace("2", "1");
+
+            collectionList.Find(c => c.Title == "1").Title = collectionList[1].Title.Replace("2", "1");
+            collectionList.Find(c => c.Title == tempTitle).Uri = collectionList[1].Uri.Replace("2", "1");
 
             return collectionList;
         }
@@ -132,7 +138,7 @@ namespace mljPodcast.Controllers
 
         private List<Podcast> GetPodcasts(HtmlDocument htmldoc)
         {
-            string xPathString = "//div[@class='span8 sermon']";
+            string xPathString = "//div[@class='col-md-12 sermon']";
             HtmlNode bodyNode = htmldoc.DocumentNode.SelectSingleNode("//body");
 
             List<Podcast> returnPodcastList = new List<Podcast>();

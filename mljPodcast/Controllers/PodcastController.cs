@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mljPodcast.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,32 +15,19 @@ namespace mljPodcast.Controllers
             return View();
         }
 
-        public ActionResult Romans(int id = 0)
+        public ActionResult RomansStatic()
         {
-            PodcastViewModel vm = new PodcastViewModel(id);
-
-            return View(vm.PodcastCollection.AsEnumerable());
-        }
-
-        public ActionResult ViewPodcastData()
-        {
-            DBInitializerRomans data = new DBInitializerRomans();
-
-            PodcastCollection p = data.GetPodcastCollection();
-
             return View();
         }
 
-        public ActionResult UpdateData()
+        public ActionResult Romans(int id = 0)
         {
-            DBInitializerRomans init = new DBInitializerRomans();
-            PodcastCollection podcastCollection = init.GetPodcastCollection();
+            List<Podcast> podcastModelForView = new List<Podcast>();
+            PodcastDataService podcastDataService = new PodcastDataService();
 
-            //PodcastContext dbcontext = new PodcastContext();
-            //dbcontext.PodcastCollections.Add(podcastCollection);
-            //dbcontext.SaveChanges();
+            podcastModelForView = podcastDataService.RetrieveAllPodcasts("Romans", new List<PodcastCollection>(), podcastModelForView);            
 
-            return View(podcastCollection.ChildCollections);
+            return View(podcastModelForView);
         }
     }
 }

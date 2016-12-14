@@ -28,12 +28,4 @@ namespace mljPodcast
         public virtual ICollection<PodcastCollection> ChildCollections { get; set; }
         public virtual ICollection<Podcast> Podcasts { get; set; }
     }
-
-    // <item>
-    //  <title>411 Item 138 ZedCast with Bruce Murray - Voicemail line 206-666-4357 </title>
-    //  <link>http://podcast411.com/forums/viewtopic.php?t=451</link>
-    //  <guid>http://media.libsyn.com/media/podcast411/411_060325.mp3</guid>
-    //  <description></description>
-    //  <enclosure url = "http://media.libsyn.com/media/podcast411/411_060325.mp3" length="11779397" type="audio/mpeg"/>
-    //</item>
 }

@@ -213,6 +213,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Podcast.cs" />
     <Compile Include="Models\PodcastDataService.cs" />
+    <Compile Include="Models\RazorFix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

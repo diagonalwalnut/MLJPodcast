@@ -211,7 +211,7 @@ namespace mljPodcast.Controllers
 
             try
             {
-                description = metaData + bibleReference + "<br>" + node.SelectSingleNode("//p[@class='description']").InnerText;
+                description = metaData + bibleReference + "<br>" + node.SelectSingleNode("p[@class='description']").InnerText;
             }
             catch (Exception) { }
 

@@ -36,7 +36,7 @@ namespace mljPodcast.Controllers
             //PodcastDataService podcastDataService = new PodcastDataService();
             //podcastDataService.StoreCollection("Romans", new Newtonsoft.Json.JsonSerializer(), podcastCollection);
             
-            //return View();
+            return View();
         }        
 
         private List<Podcast> ProcessPodcastSubcollection(string uri)

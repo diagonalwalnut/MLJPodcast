@@ -30,6 +30,7 @@
                 <link rel="author license" href="@Html.DisplayFor(modelItem => podcast.EpisodeUri)" />
                 <guid>@Html.DisplayFor(modelItem => podcast.Uri)</guid>
                 <description>@Html.DisplayFor(modelItem => podcast.Description)</description>
+                <pubDate>@Html.DisplayFor(modelItem => podcast.PublicationDate)</pubDate>
                 <enclosure url="@Html.DisplayFor(modelItem => podcast.Uri)" type="audio/mpeg" />
             </item>
         }

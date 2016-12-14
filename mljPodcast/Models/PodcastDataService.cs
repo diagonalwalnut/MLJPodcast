@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -37,10 +38,14 @@ namespace mljPodcast.Models
         {
             collection = RetrieveCollection(bookForPath, collection);
 
+            DateTime firstDate = DateTime.Today.AddDays(-1 * 365 * 3);
+
             foreach (PodcastCollection pCollection in collection)
             {
                 foreach (Podcast podcast in pCollection.Podcasts)
                 {
+                    firstDate = firstDate.AddDays(1);
+                    podcast.PublicationDate = firstDate;
                     podcastList.Add(podcast);
                 }
             }

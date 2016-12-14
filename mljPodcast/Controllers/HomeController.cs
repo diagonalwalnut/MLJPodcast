@@ -26,16 +26,16 @@ namespace mljPodcast.Controllers
 
         public ActionResult Podcast()
         {
-            //string uri = "http://www.mljtrust.org/collections/book-of-romans/";
+            string uri = "http://www.mljtrust.org/collections/book-of-romans/";
 
-            //List<PodcastCollection> podcastCollection = new List<PodcastCollection>();
-            //HtmlDocument htmlDoc = GetHtmlDoc(uri);
+            List<PodcastCollection> podcastCollection = new List<PodcastCollection>();
+            HtmlDocument htmlDoc = GetHtmlDoc(uri);
 
-            //podcastCollection = GetCollections(htmlDoc, "chapter-list", uri);
+            podcastCollection = GetCollections(htmlDoc, "chapter-list", uri);
 
-            //PodcastDataService podcastDataService = new PodcastDataService();
-            //podcastDataService.StoreCollection("Romans", new Newtonsoft.Json.JsonSerializer(), podcastCollection);
-            
+            PodcastDataService podcastDataService = new PodcastDataService();
+            podcastDataService.StoreCollection("Romans", new Newtonsoft.Json.JsonSerializer(), podcastCollection);
+
             return View();
         }        
 

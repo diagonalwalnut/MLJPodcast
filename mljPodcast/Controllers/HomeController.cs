@@ -216,7 +216,9 @@ namespace mljPodcast.Controllers
                 tempDescription = tempDescription.Replace("&mdash;", "");
                 tempDescription = tempDescription.Replace("&#39;", "'");
                 tempDescription = tempDescription.Replace("&nbsp;", " ");
-                description = tempDescription;
+                tempDescription = tempDescription.Replace("&amp;", "&");
+                
+                description = System.Net.WebUtility.HtmlDecode(tempDescription);
             }
             catch (Exception) { }
 

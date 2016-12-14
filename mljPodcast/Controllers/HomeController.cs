@@ -26,6 +26,7 @@ namespace mljPodcast.Controllers
 
         public ActionResult Podcast()
         {
+            //string uri = "http://mljtrust.org/scripture/galatians/";
             string uri = "http://www.mljtrust.org/collections/book-of-romans/";
 
             List<PodcastCollection> podcastCollection = new List<PodcastCollection>();
@@ -42,12 +43,12 @@ namespace mljPodcast.Controllers
         private List<Podcast> ProcessPodcastSubcollection(string uri)
         {
             HtmlDocument htmlDoc = GetHtmlDoc(uri);
-            List<string> pages = GetSubCollections(htmlDoc, "pagination");
+            int numberOfPages = GetSubCollections(htmlDoc, "pagination");
             int currentPage = 1;
 
             List<Podcast> podcastList = new List<Podcast>();
 
-            for (int i = 1; i < (pages.Count); i++)
+            for (int i = 1; i < (numberOfPages + 1); i++)
             {
                 htmlDoc = GetHtmlDoc(uri + "?page=" + i);
                 podcastList.AddRange(GetPodcasts(htmlDoc));
@@ -91,7 +92,7 @@ namespace mljPodcast.Controllers
 
             return collectionList;
         }
-        private List<string> GetSubCollections(HtmlDocument htmldoc, string xpath)
+        private int GetSubCollections(HtmlDocument htmldoc, string xpath)
         {
             List<string> pageList = new List<string>();
 
@@ -101,29 +102,31 @@ namespace mljPodcast.Controllers
             {
                 HtmlNodeCollection test = bodyNode.SelectSingleNode("//div[@class='" + xpath + "']").ChildNodes;
 
-                var testing = test.Nodes().Select(n => n.Attributes["href"]);
-
                 foreach (var item in test)
                 {
                     try
                     {
-                        if (pageList.Count == 0)
-                        {
-                            string temp = item.Attributes["href"].Value.ToString().Replace("page=2", "page=1");
-                            pageList.Add(temp);
-                        }
-
-                        if (item.OriginalName.Equals("a") && (pageList.Count < test.Count))
+                        if (item.OriginalName.Equals("a"))
                         {
                             string pagingLink = item.Attributes["href"].Value.ToString();
                             pageList.Add(pagingLink);
                         }
                     }
-                    catch (Exception e) { }
+                    catch (Exception e)
+                    { }
                 }
             }
 
-            return pageList;
+            if (pageList.Count == 0)
+            {
+                return 1;
+            }
+
+            Char delimiter = '=';
+            String[] substrings = pageList[(pageList.Count - 2)].Split(delimiter);
+            int numberOfPages = Int32.Parse(substrings[1]);
+
+            return numberOfPages;
         }
 
         private HtmlDocument GetHtmlDoc(string uri)
